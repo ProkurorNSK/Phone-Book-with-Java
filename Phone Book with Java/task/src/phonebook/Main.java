@@ -16,8 +16,8 @@ public class Main {
         Person[] directory = new Person[directoryList.size()];
         for (int i = 0; i < directoryList.size(); i++) {
             String line = directoryList.get(i);
-            int d = line.indexOf(" ");
-            directory[i] = new Person(line.substring(d + 1), Integer.parseInt(line.substring(0, d)));
+            int del = line.indexOf(" ");
+            directory[i] = new Person(line.substring(del + 1), Integer.parseInt(line.substring(0, del)));
         }
 
         System.out.println("Start searching (linear search)...");
@@ -25,7 +25,7 @@ public class Main {
         int founds = searchArray(find, directory, Main::linearSearch);
         LocalTime time2 = LocalTime.now();
         Duration d = Duration.between(time1, time2);
-        System.out.printf("Found %d / %d entries. Time taken: %d min. %d sec. %d ms.\n", founds, find.length, d.toMinutesPart(), d.toSecondsPart(), d.toMillisPart());
+        System.out.printf("Found %d / %d entries. Time taken: %d min. %d sec. %d ms.\n\n", founds, find.length, d.toMinutesPart(), d.toSecondsPart(), d.toMillisPart());
 
         System.out.println("Start searching (bubble sort + jump search)...");
         time1 = LocalTime.now();
@@ -38,7 +38,46 @@ public class Main {
         Duration dSort = Duration.between(time1, time2);
         Duration dSearch = Duration.between(time2, time3);
         System.out.printf("Sorting time: %d min. %d sec. %d ms.%s\n", dSort.toMinutesPart(), dSort.toSecondsPart(), dSort.toMillisPart(), tooSlow ? " - STOPPED, moved to linear search" : "");
+        System.out.printf("Searching time: %d min. %d sec. %d ms.\n\n", dSearch.toMinutesPart(), dSearch.toSecondsPart(), dSearch.toMillisPart());
+
+        System.out.println("Start searching (quick sort + binary search)...");
+        for (int i = 0; i < directoryList.size(); i++) {
+            String line = directoryList.get(i);
+            int del = line.indexOf(" ");
+            directory[i] = new Person(line.substring(del + 1), Integer.parseInt(line.substring(0, del)));
+        }
+        time1 = LocalTime.now();
+        quickSort(directory, 0, directory.length - 1);
+        time2 = LocalTime.now();
+        founds = searchArray(find, directory, Main::binarySearch);
+        time3 = LocalTime.now();
+        d = Duration.between(time1, time3);
+        System.out.printf("Found %d / %d entries. Time taken: %d min. %d sec. %d ms.\n", founds, find.length, d.toMinutesPart(), d.toSecondsPart(), d.toMillisPart());
+        dSort = Duration.between(time1, time2);
+        dSearch = Duration.between(time2, time3);
+        System.out.printf("Sorting time: %d min. %d sec. %d ms.\n", dSort.toMinutesPart(), dSort.toSecondsPart(), dSort.toMillisPart());
         System.out.printf("Searching time: %d min. %d sec. %d ms.\n", dSearch.toMinutesPart(), dSearch.toSecondsPart(), dSearch.toMillisPart());
+    }
+
+    private static void quickSort(Person[] array, int l, int r) {
+        if (l < r) {
+            int pivot = Partition(array, l, r);
+            quickSort(array, l, pivot - 1);
+            quickSort(array, pivot + 1, r);
+        }
+    }
+
+    private static int Partition(Person[] array, int l, int r) {
+        Person x = array[r];
+        int i = l - 1;
+        for (int j = l; j < r; j++) {
+            if (array[j].name().compareTo(x.name()) < 0) {
+                i++;
+                swap(array, i, j);
+            }
+        }
+        swap(array, i + 1, r);
+        return i + 1;
     }
 
     private static boolean bubbleSort(Person[] array, long dMilli) {
@@ -65,6 +104,22 @@ public class Main {
         Person temp = array[i];
         array[i] = array[j];
         array[j] = temp;
+    }
+
+    private static int binarySearch(Person[] array, String target) {
+        int left = 0;
+        int right = array.length - 1;
+        while (left <= right) {
+            int middle = (left + right) / 2;
+            if (Objects.equals(array[middle].name(), target)) {
+                return middle;
+            } else if (array[middle].name().compareTo(target) > 0) {
+                right = middle - 1;
+            } else {
+                left = middle + 1;
+            }
+        }
+        return -1;
     }
 
     private static int jumpSearch(Person[] array, String target) {
