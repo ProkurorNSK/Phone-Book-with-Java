@@ -69,6 +69,6 @@ files:
     \ less than the first linear search time.\");\n            }\n        }\n    \
     \    \n        return CheckResult.correct();\n    }\n}\n"
     learner_created: false
-feedback_link: https://hyperskill.org/projects/63/stages/341/implement#comment
+feedback_link: https://hyperskill.org/learn/step/5483#comment
 status: Unchecked
-record: -1
+record: 2

@@ -59,6 +59,9 @@ files:
     \ \" + estimatedTime + \"ms in total.\");\n        }\n        \n        return\
     \ CheckResult.correct();\n    }\n}\n"
     learner_created: false
-feedback_link: https://hyperskill.org/projects/63/stages/340/implement#comment
-status: Unchecked
-record: -1
+feedback_link: https://hyperskill.org/learn/step/5482#comment
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Fri, 23 Feb 2024 09:58:33 UTC"
+record: 1
