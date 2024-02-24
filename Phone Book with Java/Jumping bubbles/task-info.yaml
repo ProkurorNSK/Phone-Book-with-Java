@@ -70,5 +70,8 @@ files:
     \    \n        return CheckResult.correct();\n    }\n}\n"
     learner_created: false
 feedback_link: https://hyperskill.org/learn/step/5483#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Sat, 24 Feb 2024 05:07:58 UTC"
 record: 2
