@@ -5,7 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.ToIntBiFunction;
 
@@ -56,6 +58,28 @@ public class Main {
         dSort = Duration.between(time1, time2);
         dSearch = Duration.between(time2, time3);
         System.out.printf("Sorting time: %d min. %d sec. %d ms.\n", dSort.toMinutesPart(), dSort.toSecondsPart(), dSort.toMillisPart());
+        System.out.printf("Searching time: %d min. %d sec. %d ms.\n\n", dSearch.toMinutesPart(), dSearch.toSecondsPart(), dSearch.toMillisPart());
+
+        System.out.println("Start searching (hash table)...");
+        time1 = LocalTime.now();
+        Map<String, Integer> mapDirectory = new HashMap<>();
+        for (String line : directoryList) {
+            int del = line.indexOf(" ");
+            mapDirectory.put(line.substring(del + 1), Integer.parseInt(line.substring(0, del)));
+        }
+        time2 = LocalTime.now();
+        founds = 0;
+        for (String name : find) {
+            if (mapDirectory.containsKey(name)) {
+                founds++;
+            }
+        }
+        time3 = LocalTime.now();
+        d = Duration.between(time1, time3);
+        System.out.printf("Found %d / %d entries. Time taken: %d min. %d sec. %d ms.\n", founds, find.length, d.toMinutesPart(), d.toSecondsPart(), d.toMillisPart());
+        dSort = Duration.between(time1, time2);
+        dSearch = Duration.between(time2, time3);
+        System.out.printf("Creating time: %d min. %d sec. %d ms.\n", dSort.toMinutesPart(), dSort.toSecondsPart(), dSort.toMillisPart());
         System.out.printf("Searching time: %d min. %d sec. %d ms.\n", dSearch.toMinutesPart(), dSearch.toSecondsPart(), dSearch.toMillisPart());
     }
 
